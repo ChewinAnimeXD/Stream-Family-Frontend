@@ -58,14 +58,29 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res,"hello");
-      setIsAuthenticated(true);
-      setUser(res.data);
+      if (res.data && res.data.token) { 
+        Cookies.set("token", res.data.token, { expires: 1 }); 
+        const token = res.data.token;
+        //localStorage.setItem("token", token)
+        //axios.defaults.headers.common["authorization"] = localStorage.getItem("token");
+
+       /* axios.get('https://backend-horizons.vercel.app/api', {
+  withCredentials: true
+});*/
+
+        console.log("El token del front",token)
+        setIsAuthenticated(true);
+        setUser(res.data);
+      } else {
+        console.error("Validando Credenciales, Intenta de nuevo");
+        setErrors(["Validando Credenciales, Intenta de nuevo"]);
+      }
     } catch (error) {
       if (Array.isArray(error.response.data)) {
-        return setErrors(error.response.data);
+        setErrors(error.response.data);
+      } else {
+        setErrors([error.response.data.message]);
       }
-      setErrors([error.response.data.message]);
     }
   };
 
