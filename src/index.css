@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #f5f5f5;
+    color: white;
+}
+
+.register {
+    background-image: linear-gradient(
+        90deg,
+        rgb(32, 32, 32),
+        rgba(32, 32, 32, 0.8)
+        ),
+        url("https://a71b1c949d.cbaul-cdnwnd.com/1c9ea608b877059e58233730a87f0341/200000019-efcbdefcc1/el-negocio-de-la-television-por-streaming-una-nueva-burbuja-4.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/*Estilos generales del botón de WhatsApp*/
+.whatsapp-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 10px;
+    z-index: 9999;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    animation: breathe 2s ease-in-out infinite;
+  }
+  
+
+  
+  /*Estilos con animación contorno respirando*/
+  @keyframes breathe {
+    0% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+  }
+  
+  /*Estilos de animación del icono latiendo*/
+  @keyframes beat {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
