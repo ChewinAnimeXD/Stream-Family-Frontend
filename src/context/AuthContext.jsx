@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       if (res.data && res.data.token) { 
+        console.log("Token del backend:", res.data.token);
         Cookies.set("token", res.data.token, { 
           expires: 1,
           sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
@@ -71,21 +72,22 @@ export const AuthProvider = ({ children }) => {
         setErrors(["Validando Credenciales, Intenta de nuevo"]);
       }
     } catch (error) {
-      setErrors([error.response?.data?.message || "Error desconocido"]);
+      if (Array.isArray(error.response.data)) {
+        setErrors(error.response.data);
+      } else {
+        setErrors([error.response.data.message]);
+      }
     }
   };
 
-  const logout = () => {
-    Cookies.remove("token");
-    setIsAuthenticated(false);
-    setUser(null);
-  };
-
-  const updateUser = async (id, user) => {
+  const signout = async () => {
     try {
-      await updateUserRequest(id, user);
+      await axios.post(`/logout`);
+      Cookies.remove("token");
+      setIsAuthenticated(false);
+      setUser(null);
     } catch (error) {
-      console.error(error);
+      console.error("Error al cerrar sesión:", error);
     }
   };
 
@@ -96,19 +98,19 @@ export const AuthProvider = ({ children }) => {
       if (!cookies.token) {
         setIsAuthenticated(false);
         setLoading(false);
-        setUser(null);
-        return;
+        return setUser(null);
       }
 
       try {
         const res = await verityTokenRequest();
         if (!res.data) {
           setIsAuthenticated(false);
-          setUser(null);
-        } else {
-          setIsAuthenticated(true);
-          setUser(res.data);
+          setLoading(false);
+          return;
         }
+
+        setIsAuthenticated(true);
+        setUser(res.data);
         setLoading(false);
       } catch (error) {
         setIsAuthenticated(false);
@@ -120,23 +122,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        signup,
-        signin,
-        logout,
-        getUsers,
-        getUser,
-        deleteUser,
-        updateUser,
-        loading,
-        user,
-        isAuthenticated,
-        errors,
-        users,
-      }}
-    >
-      {children}
+    <AuthContext.Provider value={{ user, isAuthenticated, signup, signin, signout, getUsers, getUser, deleteUser, updateUser, users }}>
+      {loading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
 };
