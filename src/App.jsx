@@ -27,25 +27,16 @@ function App() {
                   <Routes>
                     <Route path="/" element={<LoginPage />} />
                     <Route path="homePage" element={<HomePage />} />
-                    <Route
-                      path="/sellPlatform"
-                      element={<SellPlatformPage />}
-                    />
-
+                    <Route path="/sellPlatform" element={<SellPlatformPage />} />
+                    
                     <Route
                       element={<ProtectedRoute allowedRoles={["admin"]} />}
                     >
                       <Route path="userPage" element={<UserPage />} />
                       <Route path="platforms" element={<PlatformPage />} />
                       <Route path="register" element={<RegisterPage />} />
-                      <Route
-                        path="registerPlatforms"
-                        element={<RegisterPlatform />}
-                      />
-                      <Route
-                        path="/registerPlatforms/:id"
-                        element={<RegisterPlatform />}
-                      />
+                      <Route path="registerPlatforms" element={<RegisterPlatform />} />
+                      <Route path="/registerPlatforms/:id" element={<RegisterPlatform />} />
                       <Route path="/register/:id" element={<RegisterPage />} />
                     </Route>
 

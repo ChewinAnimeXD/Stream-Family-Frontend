@@ -59,15 +59,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       if (res.data && res.data.token) { 
-        Cookies.set("token", res.data.token, { expires: 1 }); 
+        Cookies.set("token", res.data.token, { 
+          expires: 1,
+          sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
+          secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
+        });
         const token = res.data.token;
-        //localStorage.setItem("token", token)
-        //axios.defaults.headers.common["authorization"] = localStorage.getItem("token");
-
-       /* axios.get('https://backend-horizons.vercel.app/api', {
-  withCredentials: true
-});*/
-
         console.log("El token del front",token)
         setIsAuthenticated(true);
         setUser(res.data);
