@@ -58,12 +58,11 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      if (res.data && res.data.token) {
-        console.log("Token del backend:", res.data.token);
-        Cookies.set("token", res.data.token, {
+      if (res.data && res.data.token) { 
+        Cookies.set("token", res.data.token, { 
           expires: 1,
-          sameSite: "None",
-          secure: true,
+          sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
+          secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
         });
         setIsAuthenticated(true);
         setUser(res.data);
@@ -72,11 +71,7 @@ export const AuthProvider = ({ children }) => {
         setErrors(["Validando Credenciales, Intenta de nuevo"]);
       }
     } catch (error) {
-      if (Array.isArray(error.response.data)) {
-        setErrors(error.response.data);
-      } else {
-        setErrors([error.response.data.message]);
-      }
+      setErrors([error.response?.data?.message || "Error desconocido"]);
     }
   };
 
@@ -88,10 +83,9 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (id, user) => {
     try {
-      const res = await updateUserRequest(id, user);
-      return res.data;
+      await updateUserRequest(id, user);
     } catch (error) {
-      console.error("Error al actualizar el usuario:", error);
+      console.error(error);
     }
   };
 
@@ -102,19 +96,19 @@ export const AuthProvider = ({ children }) => {
       if (!cookies.token) {
         setIsAuthenticated(false);
         setLoading(false);
-        return setUser(null);
+        setUser(null);
+        return;
       }
 
       try {
         const res = await verityTokenRequest();
         if (!res.data) {
           setIsAuthenticated(false);
-          setLoading(false);
-          return;
+          setUser(null);
+        } else {
+          setIsAuthenticated(true);
+          setUser(res.data);
         }
-
-        setIsAuthenticated(true);
-        setUser(res.data);
         setLoading(false);
       } catch (error) {
         setIsAuthenticated(false);
@@ -128,18 +122,18 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        isAuthenticated,
-        errors,
-        loading,
-        users,
-        getUsers,
-        getUser,
-        deleteUser,
         signup,
         signin,
         logout,
+        getUsers,
+        getUser,
+        deleteUser,
         updateUser,
+        loading,
+        user,
+        isAuthenticated,
+        errors,
+        users,
       }}
     >
       {children}
