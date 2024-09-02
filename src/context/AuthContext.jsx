@@ -58,15 +58,13 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      if (res.data && res.data.token) { 
-        console.log(res.data)
-        Cookies.set("token", res.data.token, { 
+      if (res.data && res.data.token) {
+        console.log("Token del backend:", res.data.token);
+        Cookies.set("token", res.data.token, {
           expires: 1,
-          sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
-          secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
+          sameSite: "None",
+          secure: true,
         });
-        const token = res.data.token;
-        console.log("El token del front",token)
         setIsAuthenticated(true);
         setUser(res.data);
       } else {
@@ -90,20 +88,12 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (id, user) => {
     try {
-      await updateUserRequest(id, user);
+      const res = await updateUserRequest(id, user);
+      return res.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error al actualizar el usuario:", error);
     }
   };
-
-  useEffect(() => {
-    if (errors.length > 0) {
-      const timer = setTimeout(() => {
-        setErrors([]);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [errors]);
 
   useEffect(() => {
     async function checkLogin() {
@@ -116,7 +106,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const res = await verityTokenRequest(cookies.token);
+        const res = await verityTokenRequest();
         if (!res.data) {
           setIsAuthenticated(false);
           setLoading(false);
@@ -138,18 +128,18 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        signup,
-        signin,
-        logout,
-        getUsers,
-        getUser,
-        deleteUser,
-        updateUser,
-        loading,
         user,
         isAuthenticated,
         errors,
+        loading,
         users,
+        getUsers,
+        getUser,
+        deleteUser,
+        signup,
+        signin,
+        logout,
+        updateUser,
       }}
     >
       {children}
