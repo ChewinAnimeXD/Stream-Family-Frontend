@@ -1,6 +1,14 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest, verityTokenRequest, deleteUserRequest, getUsersRequest, updateUserRequest, getUserRequest } from "../api/auth";
 import Cookies from "js-cookie";
+import {
+  registerRequest,
+  loginRequest,
+  verityTokenRequest,
+  deleteUserRequest,
+  getUsersRequest,
+  updateUserRequest,
+  getUserRequest
+} from "../api/auth";
 
 export const AuthContext = createContext();
 
@@ -33,50 +41,56 @@ export const AuthProvider = ({ children }) => {
       const res = await getUserRequest(id);
       return res.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error al obtener usuario:", error);
     }
   };
 
   const deleteUser = async (id) => {
     try {
       const res = await deleteUserRequest(id);
-      if (res.status === 204) setUsers(users.filter((user) => user._id !== id)); 
+      if (res.status === 204) {
+        setUsers(users.filter((user) => user._id !== id));
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error al eliminar usuario:", error);
+    }
+  };
+
+  const updateUser = async (id, userData) => {
+    try {
+      const res = await updateUserRequest(id, userData);
+      if (res.data) {
+        setUsers(users.map(user => user._id === id ? res.data : user));
+      }
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
     }
   };
 
   const signup = async (user) => {
     try {
-      const res = await registerRequest(user);
-      console.log(res.data);
+      await registerRequest(user);
     } catch (error) {
-      setErrors(error.response.data);
+      setErrors(error.response ? error.response.data : ["Error desconocido"]);
     }
   };
 
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      if (res.data && res.data.token) { 
-        console.log("Token del backend:", res.data.token);
-        Cookies.set("token", res.data.token, { 
+      if (res.data && res.data.token) {
+        Cookies.set("token", res.data.token, {
           expires: 1,
-          sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
-          secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
+          sameSite: "None",
+          secure: true
         });
         setIsAuthenticated(true);
         setUser(res.data);
       } else {
-        console.error("Validando Credenciales, Intenta de nuevo");
-        setErrors(["Validando Credenciales, Intenta de nuevo"]);
+        setErrors(["Validando credenciales, intenta de nuevo"]);
       }
     } catch (error) {
-      if (Array.isArray(error.response.data)) {
-        setErrors(error.response.data);
-      } else {
-        setErrors([error.response.data.message]);
-      }
+      setErrors(error.response ? error.response.data : ["Error desconocido"]);
     }
   };
 
@@ -93,9 +107,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
+      const token = Cookies.get("token");
 
-      if (!cookies.token) {
+      if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
         return setUser(null);
@@ -103,18 +117,17 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const res = await verityTokenRequest();
-        if (!res.data) {
+        if (res.data) {
+          setIsAuthenticated(true);
+          setUser(res.data);
+        } else {
           setIsAuthenticated(false);
-          setLoading(false);
-          return;
+          setUser(null);
         }
-
-        setIsAuthenticated(true);
-        setUser(res.data);
-        setLoading(false);
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
+      } finally {
         setLoading(false);
       }
     }
