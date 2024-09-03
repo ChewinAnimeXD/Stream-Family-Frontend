@@ -5,7 +5,7 @@ import '../index.css';
 const WhatsappIcon = () => {
   return (
     <a
-      href="https://wa.me/573213297968?text="
+      href="https://wa.me/573028649880?text="
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-btn"
