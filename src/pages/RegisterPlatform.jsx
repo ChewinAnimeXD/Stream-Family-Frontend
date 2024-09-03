@@ -107,6 +107,7 @@ function RegisterPlatform() {
                   <option value="PLEX">PLEX</option>
                   <option value="VIX">VIX</option>
                   <option value="CANVA 1 mes">CANVA 1 mes</option>
+                  <option value="Prime Video">Prime Video</option>
                   <option value="YouTube Premium 1 mes">
                     YouTube Premium 1 mes
                   </option>

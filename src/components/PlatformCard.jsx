@@ -75,10 +75,14 @@ function PlatformCard({ platforms, nameFilter }) {
                   </div>
                 </td>
                 <td className="px-6 py-4">{platformData.sell}</td>
-                
+
                 <td className="px-6 py-4">
-  {platformData.createDate.split('T')[0].split('-').reverse().join('/')}
-</td>
+                  {platformData.createDate
+                    .split("T")[0]
+                    .split("-")
+                    .reverse()
+                    .join("/")}
+                </td>
                 <td className="px-6 py-4">{platformData.price}</td>
                 <td className="px-6 py-4">{platformData.type}</td>
                 <td className="px-6 py-4">{platformData.email}</td>

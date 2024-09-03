@@ -2,11 +2,13 @@ import { useState } from "react";
 import { GoPencil, GoTrash } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { useSellPlatform } from "../context/SellPlatformContext";
+import { useAuth } from "../context/AuthContext";
 
 function SellPlatformCard({ sellPlatforms, nameFilter, emailFilter }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [platformIdToDelete, setPlatformIdToDelete] = useState(null);
   const { deleteSellPlatform } = useSellPlatform(); // Asumiendo que hay una función de contexto para eliminar la plataforma
+  const { user } = useAuth(); 
 
   // Función para formatear la fecha
   const formatDate = (dateString) => {
@@ -85,10 +87,12 @@ function SellPlatformCard({ sellPlatforms, nameFilter, emailFilter }) {
                     <td className="px-6 py-4">{sellPlatformData.pin}</td>
                     <td className="px-6 py-4">
                       {/* Botón de eliminación */}
-                      <GoTrash
-                        className="text-red-500 text-xl cursor-pointer"
-                        onClick={() => handleDeleteConfirmation(sellPlatformData._id)}
-                      />
+                      {user.role !== 'vendedor' && (
+                        <GoTrash
+                          className="text-red-500 text-xl cursor-pointer"
+                          onClick={() => handleDeleteConfirmation(sellPlatformData._id)}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))}

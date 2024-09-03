@@ -17,6 +17,7 @@ import plex from "../assets/plex.jpg";
 import spotify from "../assets/spotify.jpg";
 import vix from "../assets/vix.jpg";
 import youtube from "../assets/youtube.jpg";
+import primeVideo from "../assets/primeVideo.jpg";
 
 function BuyCard({ platform }) {
   const { updatePlatform } = usePlatform();
@@ -37,18 +38,18 @@ function BuyCard({ platform }) {
     try {
       // Actualizar el estado de la plataforma
       await updatePlatform(platform._id, { ...platform, sell: "si" });
-  
+
       // Actualizar el balance del usuario
       const newBalance = user.balance - platform.price;
       await updateUser(user.id, { balance: newBalance });
-  
+
       // Datos a enviar en la solicitud
       const sellRequestData = {
         name: platform.name,
         seller: user.username,
         sell: "si", // El valor actualizado de sell
         createDate: platform.createDate,
-        buyDate: new Date().toISOString().split('T')[0], // Fecha de compra actual
+        buyDate: new Date().toISOString().split("T")[0], // Fecha de compra actual
         price: platform.price,
         type: platform.type,
         email: platform.email,
@@ -56,15 +57,14 @@ function BuyCard({ platform }) {
         screen: platform.screen,
         pin: platform.pin,
       };
-  
+
       // Luego, registra la venta
       const response = await registerSellRequest(sellRequestData);
-  
+
       if (response.status === 200) {
         console.log("Plataforma comprada exitosamente");
         setShowConfirmation(false); // Cierra el modal de confirmación
         setShowSuccessCard(true); // Muestra la tarjeta de éxito
-        
       } else {
         console.error("Error al comprar la plataforma");
       }
@@ -127,9 +127,13 @@ function BuyCard({ platform }) {
     case "Apple TV":
       imageSrc = apple;
       break;
+    case "Prime Video":
+      imageSrc = primeVideo;
+      break;
     default:
       imageSrc = null;
   }
+
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
@@ -154,10 +158,11 @@ function BuyCard({ platform }) {
             <strong>Tipo de cuenta:</strong> {platform.type}
           </p>
         </div>
-        <div className="border-t border-gray-200">
-          <dl>
-            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
+      </div>
+      <div className="border-t border-gray-200">
+        <dl>
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">
                 Comprar plataforma
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
@@ -171,7 +176,6 @@ function BuyCard({ platform }) {
             </div>
           </dl>
         </div>
-      </div>
 
       {showConfirmationBalance && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -179,7 +183,8 @@ function BuyCard({ platform }) {
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
             <div
               className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
@@ -196,7 +201,8 @@ function BuyCard({ platform }) {
                       className="text-lg leading-6 font-medium text-gray-900"
                       id="modal-headline"
                     >
-                      No tienes saldo suficiente para comprar esta plataforma, comunícate con tu proveedor.
+                      No tienes saldo suficiente para comprar esta plataforma,
+                      comunícate con tu proveedor.
                     </h3>
                   </div>
                 </div>
@@ -221,7 +227,8 @@ function BuyCard({ platform }) {
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
             <div
               className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
@@ -275,7 +282,8 @@ function BuyCard({ platform }) {
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
             <div
               className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
@@ -283,50 +291,71 @@ function BuyCard({ platform }) {
               aria-labelledby="modal-headline"
             >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-  <div className="sm:flex sm:items-start">
-    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-      <GiShoppingCart className="h-6 w-6 text-green-600" />
-    </div>
-    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-      <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-        ¡Compra exitosa!
-      </h3>
-      <p className="mt-2 text-sm text-gray-500">
-        La compra de la plataforma <strong>{platform.name}</strong> se ha realizado exitosamente.
-      </p><br></br>
-      <p className="mt-2 text-sm text-gray-500"><strong>Plataforma:</strong> {platform.name} 🩵</p>
-      <p className="mt-2 text-sm text-gray-500"><strong>📤Correo:</strong> {platform.email}</p>
-      <p className="mt-2 text-sm text-gray-500"><strong>🔑Contraseña: </strong>{platform.password}</p>
-
-      {platform.type == "pantalla" && (
-        <p className="mt-2 text-sm text-gray-500">
-          <strong>🏷️Perfil: </strong> {platform.screen}<br></br>
-          <strong>🏷️Pin:</strong> {platform.pin} <br></br><br></br>
-          <strong>Recuerda estas comprando 1 PANTALLA QUE SIRVE SOLO PARA UN DISPOSITIVO </strong>
-          <br></br><br></br>⚠️ <strong>NO </strong>modificar perfiles diferentes al asignado. ⚠️
-        </p>
-      )}
-
-      <p className="mt-2 text-sm text-gray-500">
-      ⚠️ Por favor NO Cambiar clave, NO agregar números de teléfono, y NO usar en más de 1 dispositivo a la vez O SERA PERDIDA DE GARANTIA. ⚠️
-      </p> <br></br>
-      <p className="mt-2 text-sm text-gray-500"><strong>MUCHAS GRACIAS POR TU COMPRA!🎬</strong></p>
-    </div>
-  </div>
-</div>
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <GiShoppingCart className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3
+                      className="text-lg leading-6 font-medium text-gray-900"
+                      id="modal-headline"
+                    >
+                      ¡Compra exitosa!
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-500">
+                      La compra de la plataforma{" "}
+                      <strong>{platform.name}</strong> se ha realizado
+                      exitosamente.
+                    </p>
+                    <br></br>
+                    <p className="mt-2 text-sm text-gray-500">
+                      <strong>Plataforma:</strong> {platform.name} 🩵
+                    </p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      <strong>📤Correo:</strong> {platform.email}
+                    </p>
+                    <p className="mt-2 text-sm text-gray-500">
+                      <strong>🔑Contraseña: </strong>
+                      {platform.password}
+                    </p>
+                    {platform.type == "pantalla" && (
+                      <p className="mt-2 text-sm text-gray-500">
+                        <strong>🏷️Perfil: </strong> {platform.screen}
+                        <br></br>
+                        <strong>🏷️Pin:</strong> {platform.pin} <br></br>
+                        <br></br>
+                        <strong>
+                          Recuerda estas comprando 1 PANTALLA QUE SIRVE SOLO
+                          PARA UN DISPOSITIVO{" "}
+                        </strong>
+                        <br></br>
+                        <br></br>⚠️ <strong>NO </strong>modificar perfiles
+                        diferentes al asignado. ⚠️
+                      </p>
+                    )}
+                    <p className="mt-2 text-sm text-gray-500">
+                      ⚠️ Por favor NO Cambiar clave, NO agregar números de
+                      teléfono, y NO usar en más de 1 dispositivo a la vez O
+                      SERA PERDIDA DE GARANTIA. ⚠️
+                    </p>{" "}
+                    <br></br>
+                    <p className="mt-2 text-sm text-gray-500">
+                      <strong>MUCHAS GRACIAS POR TU COMPRA!🎬</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
-                      onClick={() => {
-                        setShowSuccessCard(false);
-                        window.location.reload();
-                      }}
-                  
+                  onClick={() => {
+                    setShowSuccessCard(false);
+                    window.location.reload();
+                  }}
                   type="button"
                   className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
                 >
                   Aceptar
-                  
                 </button>
               </div>
             </div>

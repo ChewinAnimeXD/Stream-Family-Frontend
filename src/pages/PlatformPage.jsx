@@ -40,6 +40,7 @@ function PlatformPage() {
               <option value="Crunchyroll">Crunchyroll</option>
               <option value="Paramount">Paramount</option>
               <option value="PLEX">PLEX</option>
+              <option value="Max">Max</option>
               <option value="VIX">VIX</option>
               <option value="Canva">Canva</option>
               <option value="YouTube">YouTube</option>

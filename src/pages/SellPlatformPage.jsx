@@ -48,7 +48,7 @@ function SellPlatformPage() {
               placeholder="Filtrar por email"
               value={emailFilter}
               onChange={(e) => setEmailFilter(e.target.value)}
-              className="border border-gray-300 rounded px-4 py-2 mr-2"
+              className="border border-gray-300 text-gray-800 rounded px-4 py-2 mr-2"
             />
 
             <button
