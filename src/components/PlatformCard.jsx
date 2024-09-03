@@ -75,9 +75,10 @@ function PlatformCard({ platforms, nameFilter }) {
                   </div>
                 </td>
                 <td className="px-6 py-4">{platformData.sell}</td>
+                
                 <td className="px-6 py-4">
-                  {new Date(platformData.createDate).toLocaleDateString()}
-                </td>
+  {platformData.createDate.split('T')[0].split('-').reverse().join('/')}
+</td>
                 <td className="px-6 py-4">{platformData.price}</td>
                 <td className="px-6 py-4">{platformData.type}</td>
                 <td className="px-6 py-4">{platformData.email}</td>
@@ -140,7 +141,7 @@ function PlatformCard({ platforms, nameFilter }) {
                       className="text-lg leading-6 font-medium text-gray-900"
                       id="modal-headline"
                     >
-                      ¿Estás seguro que deseas eliminar este usuario?
+                      ¿Estás seguro que deseas eliminar esta plataforma?
                     </h3>
                   </div>
                 </div>

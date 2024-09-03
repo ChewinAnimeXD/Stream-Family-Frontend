@@ -131,8 +131,9 @@ function RegisterPage() {
                   <option value="" disabled hidden>
                     Selecciona un rol
                   </option>
-                  <option value="admin">Administrador</option>
                   <option value="vendedor">Vendedor</option>
+                  <option value="admin">Administrador</option>
+                  
                 </select>
                 {errors.role && (
                   <p className="text-red-500">El rol es requerido</p>

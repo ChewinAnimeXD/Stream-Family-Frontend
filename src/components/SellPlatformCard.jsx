@@ -73,8 +73,10 @@ function SellPlatformCard({ sellPlatforms, nameFilter, emailFilter }) {
                     </td>
                     <td className="px-6 py-4">{sellPlatformData.seller}</td>
                     <td className="px-6 py-4">{sellPlatformData.sell}</td>
-                    <td className="px-6 py-4">{formatDate(sellPlatformData.createDate)}</td>
-                    <td className="px-6 py-4">{formatDate(sellPlatformData.buyDate)}</td>
+                    <td className="px-6 py-4">{sellPlatformData.createDate.split('T')[0].split('-').reverse().join('/')}</td>
+                    <td className="px-6 py-4">
+  {sellPlatformData.buyDate.split('T')[0].split('-').reverse().join('/')}
+</td>
                     <td className="px-6 py-4">{sellPlatformData.price}</td>
                     <td className="px-6 py-4">{sellPlatformData.type}</td>
                     <td className="px-6 py-4">{sellPlatformData.email}</td>
