@@ -10,20 +10,6 @@ function BuyCard({ platform }) {
   const [showConfirmationBalance, setShowConfirmationBalance] = useState(false);
   const [showSuccessCard, setShowSuccessCard] = useState(false);
 
-  const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
-  const canva = "https://i.postimg.cc/j2fbMYHr/canva.png";
-  const apple = "https://i.postimg.cc/NFm317ts/apple.webp";
-  const crunchyroll = "https://i.postimg.cc/1t2S03NH/crunchyroll.webp";
-  const directv = "https://i.postimg.cc/QtHsWTVC/directv.png";
-  const disney = "https://i.postimg.cc/xdj9n72K/disney.webp";
-  const iptv = "https://i.postimg.cc/SQYkSCwt/iptv.jpg";
-  const max = "https://i.postimg.cc/MKywRxZ7/max.jpg";
-  const paramount = "https://i.postimg.cc/4NCZmnG4/paramount.webp";
-  const plex = "https://i.postimg.cc/W3BRFYQY/plex.png";
-  const spotify = "https://i.postimg.cc/CKKpWqG7/spotify.jpg";
-  const vix = "https://i.postimg.cc/y8jzQPZW/vix.webp";
-  const youtube = "https://i.postimg.cc/d1kP0cST/youtube.jpg";
-  const primeVideo = "https://i.postimg.cc/8CngDzwS/prime-Video.jpg";
 
   const handleConfirmation = () => {
     if (user.balance < platform.price) {
@@ -71,73 +57,13 @@ function BuyCard({ platform }) {
     return null;
   }
 
-  let imageSrc;
-  switch (platform.name) {
-    case "Netflix":
-    case "Netflix original":
-    case "Netflix genérico":
-    case "Netflix original pantalla":
-    case "Netflix genérico pantalla":
-      imageSrc = netflix;
-      break;
-    case "MAX (HBO)":
-      imageSrc = max;
-      break;
-    case "Crunchyroll":
-      imageSrc = crunchyroll;
-      break;
-    case "Paramount":
-      imageSrc = paramount;
-      break;
-    case "PLEX":
-      imageSrc = plex;
-      break;
-    case "VIX":
-      imageSrc = vix;
-      break;
-    case "CANVA 1 mes":
-      imageSrc = canva;
-      break;
-    case "YouTube Premium 1 mes":
-    case "YouTube Premium 3 mes":
-      imageSrc = youtube;
-      break;
-    case "IPTV":
-      imageSrc = iptv;
-      break;
-    case "Spotify 1 mes":
-    case "Spotify 3 mes":
-      imageSrc = spotify;
-      break;
-    case "Disney premium":
-    case "Disney estándar":
-      imageSrc = disney;
-      break;
-    case "DIRECTV con win":
-    case "DIRECTV basic":
-      imageSrc = directv;
-      break;
-    case "Apple TV":
-      imageSrc = apple;
-      break;
-    case "Prime Video":
-      imageSrc = primeVideo;
-      break;
-    default:
-      imageSrc = null;
-  }
 
   return (
     <div>
       <div>
-        <div>
-          <h3>{platform.name}</h3>
-          {imageSrc && (
-            <img
-              src={imageSrc}
-              alt={platform.name}
-            />
-          )}
+        <div className="bg-cyan-900">
+          <h3 >{platform.name}</h3>
+        
           <p>
             <strong>Precio:</strong> {platform.price}
           </p>
