@@ -4,20 +4,7 @@ import { IoWarningOutline } from "react-icons/io5";
 import { usePlatform } from "../context/PlatformContext";
 import { useAuth } from "../context/AuthContext";
 import { registerSellRequest } from "../api/sellPlatform";
-import netflix from "../assets/netflix.jpg";
-import canva from "../assets/canva.jpg";
-import apple from "../assets/apple.jpg";
-import crunchyroll from "../assets/crunchyroll.jpg";
-import directv from "../assets/directv.jpg";
-import disney from "../assets/disney.jpg";
-import iptv from "../assets/iptv.jpg";
-import max from "../assets/max.jpg";
-import paramount from "../assets/paramount.jpg";
-import plex from "../assets/plex.jpg";
-import spotify from "../assets/spotify.jpg";
-import vix from "../assets/vix.jpg";
-import youtube from "../assets/youtube.jpg";
-import primeVideo from "../assets/primeVideo.jpg";
+
 
 function BuyCard({ platform }) {
   const { updatePlatform } = usePlatform();
@@ -25,6 +12,21 @@ function BuyCard({ platform }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showConfirmationBalance, setShowConfirmationBalance] = useState(false);
   const [showSuccessCard, setShowSuccessCard] = useState(false); // Nuevo estado para la tarjeta de éxito
+
+  const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
+  const canva = "https://i.postimg.cc/j2fbMYHr/canva.png";
+  const apple = "https://i.postimg.cc/NFm317ts/apple.webp";
+  const crunchyroll = "https://i.postimg.cc/1t2S03NH/crunchyroll.webp";
+  const directv = "https://i.postimg.cc/QtHsWTVC/directv.png";
+  const disney = "https://i.postimg.cc/xdj9n72K/disney.webp";
+  const iptv = "https://i.postimg.cc/SQYkSCwt/iptv.jpg";
+  const max = "https://i.postimg.cc/MKywRxZ7/max.jpg";
+  const paramount = "https://i.postimg.cc/4NCZmnG4/paramount.webp";
+  const plex = "https://i.postimg.cc/W3BRFYQY/plex.png";
+  const spotify = "https://i.postimg.cc/CKKpWqG7/spotify.jpg";
+  const vix = "https://i.postimg.cc/y8jzQPZW/vix.webp";
+  const youtube = "https://i.postimg.cc/d1kP0cST/youtube.jpg";
+  const primeVideo = "https://i.postimg.cc/8CngDzwS/prime-Video.jpg";
 
   const handleConfirmation = () => {
     if (user.balance < platform.price) {
