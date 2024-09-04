@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { GiShoppingCart } from "react-icons/gi";
-import { IoWarningOutline } from "react-icons/io5";
 import { usePlatform } from "../context/PlatformContext";
 import { useAuth } from "../context/AuthContext";
 import { registerSellRequest } from "../api/sellPlatform";
@@ -153,11 +151,6 @@ function BuyCard({ platform }) {
           <div>
             <dt>Comprar plataforma</dt>
             <dd>
-              <div>
-                <GiShoppingCart
-                  onClick={handleConfirmation}
-                />
-              </div>
             </dd>
           </div>
         </div>
@@ -172,9 +165,6 @@ function BuyCard({ platform }) {
             <div>
               <div>
                 <div>
-                  <div>
-                    <IoWarningOutline />
-                  </div>
                   <div>
                     <h3>
                       No tienes saldo suficiente para comprar esta plataforma,
@@ -204,9 +194,6 @@ function BuyCard({ platform }) {
             <div>
               <div>
                 <div>
-                  <div>
-                    <GiShoppingCart />
-                  </div>
                   <div>
                     <h3>
                       Estás a punto de comprar esta plataforma:
@@ -245,9 +232,6 @@ function BuyCard({ platform }) {
             <div>
               <div>
                 <div>
-                  <div>
-                    <GiShoppingCart />
-                  </div>
                   <div>
                     <h3>
                       ¡Compra exitosa!
