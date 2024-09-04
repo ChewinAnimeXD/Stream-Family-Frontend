@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       if (res.data && res.data.token) { 
-        console.log(res.data)
+        //console.log(res.data)
         Cookies.set("token", res.data.token, { 
           expires: 1,
           sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
