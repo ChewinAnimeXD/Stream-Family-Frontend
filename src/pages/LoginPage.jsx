@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import "../index.css";
 import logo from "../assets/banner.png"; // Asegúrate de que la ruta de la imagen sea correcta
 
+
 const LoginPage = () => {
   const {
     register,
@@ -18,6 +19,8 @@ const LoginPage = () => {
     signin(data);
   });
 
+  const logo2 = "https://i.postimg.cc/8z7p7BSf/banner.png"
+
   useEffect(() => {
     if (isAuthenticated) navigate("/homePage");
   }, [isAuthenticated]);
@@ -25,7 +28,8 @@ const LoginPage = () => {
   return (
     <div className="register flex flex-col min-h-screen rounded-lg md:p-8">
       <div className="mb-5 ml-28 mt-10">
-        <img src={logo} alt="Logo" className="w-28 mr-4" />
+      <img src={logo2} alt="Imagen desde Google Drive" className="w-28 mr-4" />
+
         </div>
         <div className="ml-8">
           <h1 className="text-gray-100 text-3xl font-medium tracking-widest">
