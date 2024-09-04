@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-      console.log(res.data);
+      //console.log(res.data);
     } catch (error) {
       setErrors(error.response.data);
     }
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
           secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
         });
         const token = res.data.token;
-        console.log("El token del front",token)
+        //console.log("El token del front",token)
         setIsAuthenticated(true);
         setUser(res.data);
       } else {
