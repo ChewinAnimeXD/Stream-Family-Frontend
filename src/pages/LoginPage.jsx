@@ -33,7 +33,7 @@ const LoginPage = () => {
         </div>
         <div className="ml-8">
           <h1 className="text-gray-100 text-3xl font-medium tracking-widest">
-            STREAM.FAMILY
+            STREAM.FAMILY para probar cache
           </h1>
         </div>
       <div className="p-8">
