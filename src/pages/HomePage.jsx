@@ -1,9 +1,11 @@
 import Navbar from "../components/Navbar";
-import banner from "../assets/homepage.jpg"
 import WhatsappIcon from "../components/WhatsappIcon" 
 import Footer from "../components/footer";
 
 const HomePage = () => {
+
+  const banner = "https://i.postimg.cc/TPkfw9dB/homepage.webp";
+
   return (
     <>
       <Navbar>
