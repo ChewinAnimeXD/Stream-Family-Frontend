@@ -8,7 +8,6 @@ import {
   updateUserRequest, 
   getUserRequest 
 } from "../api/auth";
-import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -67,11 +66,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       if (res.data && res.data.token) {
-        Cookies.set("token", res.data.token, { 
-          expires: 1,
-          sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
-          secure: true, // Asegura que la cookie solo se envíe a través de HTTPS.
-        });
+        // Guardamos el token en localStorage
+        localStorage.setItem("token", res.data.token);
         setIsAuthenticated(true);
         setUser(res.data);
       } else {
@@ -88,10 +84,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove("token", {
-      sameSite: "None", 
-      secure: true,
-    });
+    // Eliminamos el token de localStorage
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
   };
@@ -115,7 +109,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const token = Cookies.get("token");
+      const token = localStorage.getItem("token");
 
       if (!token) {
         setIsAuthenticated(false);
