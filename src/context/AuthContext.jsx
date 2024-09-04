@@ -1,5 +1,13 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest, verityTokenRequest, deleteUserRequest, getUsersRequest, updateUserRequest, getUserRequest } from "../api/auth";
+import { 
+  registerRequest, 
+  loginRequest, 
+  verityTokenRequest, 
+  deleteUserRequest, 
+  getUsersRequest, 
+  updateUserRequest, 
+  getUserRequest 
+} from "../api/auth";
 import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
@@ -49,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
-      //console.log(res.data);
+      console.log(res.data);
     } catch (error) {
       setErrors(error.response.data);
     }
@@ -58,15 +66,12 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      if (res.data && res.data.token) { 
-        //console.log(res.data)
+      if (res.data && res.data.token) {
         Cookies.set("token", res.data.token, { 
           expires: 1,
           sameSite: "None", // Asegura que la cookie se envíe entre diferentes dominios/subdominios.
-          secure: true // Asegura que la cookie solo se envíe a través de HTTPS.
+          secure: true, // Asegura que la cookie solo se envíe a través de HTTPS.
         });
-        const token = res.data.token;
-        //console.log("El token del front",token)
         setIsAuthenticated(true);
         setUser(res.data);
       } else {
@@ -83,7 +88,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove("token");
+    Cookies.remove("token", {
+      sameSite: "None", 
+      secure: true,
+    });
     setIsAuthenticated(false);
     setUser(null);
   };
@@ -107,16 +115,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
+      const token = Cookies.get("token");
 
-      if (!cookies.token) {
+      if (!token) {
         setIsAuthenticated(false);
         setLoading(false);
         return setUser(null);
       }
 
       try {
-        const res = await verityTokenRequest(cookies.token);
+        const res = await verityTokenRequest(token);
         if (!res.data) {
           setIsAuthenticated(false);
           setLoading(false);
@@ -125,10 +133,10 @@ export const AuthProvider = ({ children }) => {
 
         setIsAuthenticated(true);
         setUser(res.data);
-        setLoading(false);
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
+      } finally {
         setLoading(false);
       }
     }
