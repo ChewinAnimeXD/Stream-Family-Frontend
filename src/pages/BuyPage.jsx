@@ -13,19 +13,18 @@ function BuyPage() {
     getPlatforms(userId);
   }, [userId, getPlatforms]); // Añade getPlatforms como dependencia del useEffect
 
-  // Filtra las plataformas según el filtro seleccionado
-  const filterPlatformsByType = (platforms, type) => {
-    if (type === "Todos") return platforms;
-
-    return platforms.filter((platform) => {
-      // Tomar solo la primera palabra del nombre de la plataforma
+  // Agrupar plataformas por tipo
+  const groupPlatformsByType = (platforms) => {
+    return platforms.reduce((acc, platform) => {
       const platformType = platform.name.split(" ")[0];
-      return platformType === type;
-    });
+      if (!acc[platformType]) acc[platformType] = [];
+      acc[platformType].push(platform);
+      return acc;
+    }, {});
   };
 
-  // Aplicar filtro a las plataformas
-  const filteredPlatforms = filterPlatformsByType(platforms, selectedFilter);
+  // Aplicar el filtro de plataforma seleccionada y agruparlas
+  const groupedPlatforms = groupPlatformsByType(platforms);
 
   return (
     <>
@@ -37,9 +36,8 @@ function BuyPage() {
             </p>
           </div>
 
-          {/* Renderizar plataformas filtradas */}
-          <div className="">
-            {/* Agrega el filtro de selección */}
+          {/* Renderizar filtro de selección */}
+          <div>
             <label className="text-black mr-2 p-2" htmlFor="nameFilter">
               Filtrar por plataforma:
             </label>
@@ -65,10 +63,22 @@ function BuyPage() {
               <option value="Prime">Prime Video</option>
             </select>
           </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 p-4 ">
-            {filteredPlatforms.map((platform) => (
-              <BuyCard platform={platform} key={platform._id} />
-            ))}
+
+          {/* Renderizar plataformas agrupadas */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 p-4">
+            {selectedFilter === "Todos"
+              ? Object.keys(groupedPlatforms).map((type) => (
+                  <div key={type}>
+                    <h2 className="text-lg font-bold mt-4">{type}</h2>
+                    {groupedPlatforms[type].map((platform) => (
+                      <BuyCard platform={platform} key={platform._id} />
+                    ))}
+                  </div>
+                ))
+              : groupedPlatforms[selectedFilter] &&
+                groupedPlatforms[selectedFilter].map((platform) => (
+                  <BuyCard platform={platform} key={platform._id} />
+                ))}
           </div>
         </div>
       </Navbar>
