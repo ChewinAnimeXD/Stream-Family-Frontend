@@ -12,8 +12,6 @@ function BuyCard({ platform }) {
   const [showConfirmationBalance, setShowConfirmationBalance] = useState(false);
   const [showSuccessCard, setShowSuccessCard] = useState(false); // Nuevo estado para la tarjeta de éxito
 
-
-
   const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
   const canva = "https://i.postimg.cc/j2fbMYHr/canva.png";
   const apple = "https://i.postimg.cc/NFm317ts/apple.webp";
@@ -29,6 +27,13 @@ function BuyCard({ platform }) {
   const youtube = "https://i.postimg.cc/d1kP0cST/youtube.jpg";
   const primeVideo = "https://i.postimg.cc/8CngDzwS/prime-Video.jpg";
   const claro = "https://i.postimg.cc/8kjqKTY9/claro.jpg";
+
+  // Función para ajustar la fecha a la zona horaria colombiana
+  const convertToColombianTime = (date) => {
+    const utcDate = new Date(date);
+    const colombianTime = new Date(utcDate.getTime() - (5 * 60 * 60 * 1000)); // Restar 5 horas
+    return colombianTime.toISOString();
+  };
 
   const handleConfirmation = () => {
     if (user.balance < platform.price) {
@@ -52,8 +57,8 @@ function BuyCard({ platform }) {
         name: platform.name,
         seller: user.username,
         sell: "si", // El valor actualizado de sell
-        createDate: platform.createDate,
-        buyDate: new Date().toISOString().split("T")[0], // Fecha de compra actual
+        createDate: platform.createDate, // Ajustar createDate
+        buyDate: convertToColombianTime(new Date().toISOString()), // Ajustar buyDate
         price: platform.price,
         type: platform.type,
         email: platform.email,
@@ -76,8 +81,6 @@ function BuyCard({ platform }) {
       console.error("Error en la solicitud:", error);
     }
   };
-
-
 
   if (platform.sell === "si") {
     return null;

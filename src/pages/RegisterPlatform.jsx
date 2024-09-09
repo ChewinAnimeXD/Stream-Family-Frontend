@@ -21,13 +21,19 @@ function RegisterPlatform() {
   const params = useParams();
   const navigate = useNavigate();
 
+  const convertToColombianTime = (date) => {
+    const utcDate = new Date(date);
+    const colombianTime = new Date(utcDate.getTime() - (5 * 60 * 60 * 1000)); // Restar 5 horas
+    return colombianTime.toISOString();
+  };
+
   const onSubmit = handleSubmit((values) => {
     console.log(values.pin);
 
     const dataValid = {
       name: values.name,
       sell: values.sell || "no",
-      createDate: values.createDate || new Date().toISOString().split("T")[0],
+      createDate: convertToColombianTime(new Date().toISOString()), 
       price: parseFloat(values.price),
       type: values.type,
       email: values.email,
@@ -55,7 +61,7 @@ function RegisterPlatform() {
         setValue("sell", platform.sell || "no");
         setValue(
           "createDate",
-          platform.createDate || new Date().toISOString().split("T")[0]
+          platform.createDate ? convertToColombianTime(platform.createDate) : convertToColombianTime(new Date().toISOString())
         );
         setValue("price", platform.price);
         setValue("type", platform.type);
@@ -65,7 +71,7 @@ function RegisterPlatform() {
         setValue("pin", platform.pin);
       } else {
         setValue("sell", "no");
-        setValue("createDate", new Date().toISOString().split("T")[0]);
+        setValue("createDate", convertToColombianTime(new Date().toISOString()));
       }
     }
     loadPlatform();
