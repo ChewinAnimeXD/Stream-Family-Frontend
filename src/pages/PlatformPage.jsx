@@ -46,7 +46,7 @@ function PlatformPage() {
               <option value="YouTube">YouTube</option>
               <option value="IPTV">IPTV</option>
               <option value="Spotify">Spotify</option>
-              <option value="Disney+">Disney</option>
+              <option value="Disney">Disney</option>
               <option value="DIRECTV">DIRECTV</option>
               <option value="AppleTV ">AppleTV </option>
               <option value="Prime">Prime Video</option>
