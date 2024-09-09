@@ -50,6 +50,7 @@ function PlatformPage() {
               <option value="DIRECTV">DIRECTV</option>
               <option value="AppleTV ">AppleTV </option>
               <option value="Prime">Prime Video</option>
+              <option value="Claro">Claro Video</option>
               {/* Agrega más opciones según tus roles */}
             </select>
 

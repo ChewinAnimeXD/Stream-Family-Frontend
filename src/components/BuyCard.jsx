@@ -12,6 +12,8 @@ function BuyCard({ platform }) {
   const [showConfirmationBalance, setShowConfirmationBalance] = useState(false);
   const [showSuccessCard, setShowSuccessCard] = useState(false); // Nuevo estado para la tarjeta de éxito
 
+
+
   const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
   const canva = "https://i.postimg.cc/j2fbMYHr/canva.png";
   const apple = "https://i.postimg.cc/NFm317ts/apple.webp";
@@ -26,6 +28,7 @@ function BuyCard({ platform }) {
   const vix = "https://i.postimg.cc/y8jzQPZW/vix.webp";
   const youtube = "https://i.postimg.cc/d1kP0cST/youtube.jpg";
   const primeVideo = "https://i.postimg.cc/8CngDzwS/prime-Video.jpg";
+  const claro = "https://i.postimg.cc/8kjqKTY9/claro.jpg";
 
   const handleConfirmation = () => {
     if (user.balance < platform.price) {
@@ -74,6 +77,8 @@ function BuyCard({ platform }) {
     }
   };
 
+
+
   if (platform.sell === "si") {
     return null;
   }
@@ -108,12 +113,14 @@ function BuyCard({ platform }) {
       break;
     case "YouTube Premium 1 mes":
     case "YouTube Premium 3 mes":
+    case "YouTube familiar":
       imageSrc = youtube;
       break;
     case "IPTV":
       imageSrc = iptv;
       break;
     case "Spotify 1 mes":
+    case "Spotify 2 mes":
     case "Spotify 3 mes":
       imageSrc = spotify;
       break;
@@ -130,6 +137,9 @@ function BuyCard({ platform }) {
       break;
     case "Prime Video":
       imageSrc = primeVideo;
+      break;
+    case "Claro Video con Win":
+      imageSrc = claro;
       break;
     default:
       imageSrc = null;
@@ -335,6 +345,27 @@ function BuyCard({ platform }) {
                         diferentes al asignado. ⚠️
                       </p>
                     )}
+
+<p className="mt-2 text-sm text-gray-500">
+                <strong>Fecha de expiración:</strong>{" "}
+                {(() => {
+                  // Crear copia de la fecha actual
+                  const fechaConMesPosterior = new Date();
+                  if (platform.name === "Spotify 2 mes") {
+                    fechaConMesPosterior.setMonth(fechaConMesPosterior.getMonth() + 2);
+                  } else if (
+                    platform.name === "Spotify 3 mes" ||
+                    platform.name === "YouTube Premium 3 mes"
+                  ) {
+                    fechaConMesPosterior.setMonth(fechaConMesPosterior.getMonth() + 3);
+                  } else {
+                    fechaConMesPosterior.setMonth(fechaConMesPosterior.getMonth() + 1);
+                  }
+                  return fechaConMesPosterior.toLocaleDateString("es-ES");
+                })()}
+              </p>
+
+
                     <p className="mt-2 text-sm text-gray-500">
                       ⚠️ Por favor NO Cambiar clave, NO agregar números de
                       teléfono, y NO usar en más de 1 dispositivo a la vez O

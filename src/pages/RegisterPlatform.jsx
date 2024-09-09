@@ -114,14 +114,19 @@ function RegisterPlatform() {
                   <option value="YouTube Premium 3 mes">
                     YouTube Premium 3 mes
                   </option>
+                  <option value="YouTube familiar">
+                    YouTube Familiar
+                  </option>
                   <option value="IPTV">IPTV</option>
                   <option value="Spotify 1 mes">Spotify 1 mes</option>
+                  <option value="Spotify 2 mes">Spotify 2 mes</option>
                   <option value="Spotify 3 mes">Spotify 3 mes</option>
                   <option value="Disney premium">Disney premium</option>
                   <option value="Disney estándar">Disney estándar</option>
                   <option value="DIRECTV con win">DIRECTV con win</option>
                   <option value="DIRECTV basic">DIRECTV basic</option>
                   <option value="Apple TV">Apple TV</option>
+                  <option value="Claro Video con Win">Claro Video con Win Sport </option>
                 </select>
                 {errors.name && (
                   <p className="text-red-500">El nombre es requerido</p>
