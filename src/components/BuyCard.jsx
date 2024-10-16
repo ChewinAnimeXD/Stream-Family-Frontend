@@ -10,9 +10,10 @@ function BuyCard({ platform }) {
   const { user, updateUser } = useAuth();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showConfirmationBalance, setShowConfirmationBalance] = useState(false);
-  const [showSuccessCard, setShowSuccessCard] = useState(false); // Nuevo estado para la tarjeta de éxito
+  const [showSuccessCard, setShowSuccessCard] = useState(false);
+  const [loading, setLoading] = useState(false); // Estado para manejar la carga
 
-  const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
+    const netflix = "https://i.postimg.cc/pLRHJ7yg/netflix.webp";
   const canva = "https://i.postimg.cc/j2fbMYHr/canva.png";
   const apple = "https://i.postimg.cc/NFm317ts/apple.webp";
   const crunchyroll = "https://i.postimg.cc/1t2S03NH/crunchyroll.webp";
@@ -27,12 +28,12 @@ function BuyCard({ platform }) {
   const youtube = "https://i.postimg.cc/d1kP0cST/youtube.jpg";
   const primeVideo = "https://i.postimg.cc/8CngDzwS/prime-Video.jpg";
   const claro = "https://i.postimg.cc/8kjqKTY9/claro.jpg";
+ 
 
   // Función para ajustar la fecha a la zona horaria colombiana
   const convertToColombianTime = (date) => {
     const utcDate = new Date(date);
-    const colombianTime = new Date(utcDate.getTime() - (5 * 60 * 60 * 1000)); // Restar 5 horas
-    return colombianTime.toISOString();
+    return new Date(utcDate.getTime() - 5 * 60 * 60 * 1000).toISOString();
   };
 
   const handleConfirmation = () => {
@@ -44,6 +45,7 @@ function BuyCard({ platform }) {
   };
 
   const handleBuy = async () => {
+    setLoading(true); // Activa el estado de carga
     try {
       // Actualizar el estado de la plataforma
       await updatePlatform(platform._id, { ...platform, sell: "si" });
@@ -56,9 +58,9 @@ function BuyCard({ platform }) {
       const sellRequestData = {
         name: platform.name,
         seller: user.username,
-        sell: "si", // El valor actualizado de sell
-        createDate: platform.createDate, // Ajustar createDate
-        buyDate: convertToColombianTime(new Date().toISOString()), // Ajustar buyDate
+        sell: "si",
+        createDate: platform.createDate,
+        buyDate: convertToColombianTime(new Date().toISOString()),
         price: platform.price,
         type: platform.type,
         email: platform.email,
@@ -67,18 +69,20 @@ function BuyCard({ platform }) {
         pin: platform.pin,
       };
 
-      // Luego, registra la venta
+      // Registra la venta
       const response = await registerSellRequest(sellRequestData);
 
       if (response.status === 200) {
         console.log("Plataforma comprada exitosamente");
-        setShowConfirmation(false); // Cierra el modal de confirmación
-        setShowSuccessCard(true); // Muestra la tarjeta de éxito
+        setShowConfirmation(false);
+        setShowSuccessCard(true);
       } else {
         console.error("Error al comprar la plataforma");
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
+    } finally {
+      setLoading(false); // Desactiva el estado de carga al final
     }
   };
 
@@ -234,7 +238,7 @@ function BuyCard({ platform }) {
         </div>
       )}
 
-      {showConfirmation && (
+{showConfirmation && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity">
@@ -250,38 +254,29 @@ function BuyCard({ platform }) {
             >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <GiShoppingCart className="h-6 w-6 text-green-600" />
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <GiShoppingCart className="h-6 w-6 text-blue-600" />
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-headline"
-                    >
-                      Estás a punto de comprar esta plataforma:
+                    <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+                      ¿Estás seguro de que deseas comprar esta plataforma?
                     </h3>
-                    <p className="mt-2 text-sm text-gray-500">
-                      <strong>Nombre:</strong> {platform.name}
-                      <br />
-                      <strong>Precio:</strong> {platform.price}
-                    </p>
                   </div>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
-                  onClick={() => {
-                    handleBuy(); // Llamada sin setShowSuccessCard aquí
-                  }}
+                  onClick={handleBuy}
                   type="button"
-                  className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  disabled={loading} // Deshabilita el botón mientras se procesa
                 >
-                  Confirmar
+                  {loading ? "Comprando..." : "Confirmar compra"}
                 </button>
                 <button
                   onClick={() => setShowConfirmation(false)}
                   type="button"
-                  className="mt-3 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Cancelar
                 </button>
